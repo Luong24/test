@@ -1,12 +1,24 @@
-import { Button, Checkbox, Form, Input } from 'antd';
-import React from 'react'
-import { history } from '../../App';
+import { Button, Form, Input } from 'antd';
+import React, { useEffect } from 'react'
+import { useAccountStore } from '../../mobxContext/MobxContext';
+
 
 export default function Login() {
+    const accountStore = useAccountStore()
+
     const onFinish = (values) => {
-        console.log('Success:', values);
-        history.push('/home')
+        const newData = {
+            ...values,
+            client_id: "vimc",
+            grant_type: "password",
+            scope: "openid"
+        }
+        accountStore.getToken(newData)
     };
+    useEffect(() => {
+        accountStore.getAccountAction()
+    }, [])
+    console.log('data', accountStore.lstAccount)
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
@@ -15,16 +27,15 @@ export default function Login() {
             <div className='w-1/3 px-4 pt-12 rounded-md' style={{ background: 'linear-gradient(to right, #7A7FBA, #11C37C)' }}>
                 <Form
                     name="basic"
-                    initialValues={{
-                        remember: true,
-                    }}
+
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
+                    encType='x-www-form-urlencoded'
                 >
                     <Form.Item
                         label="Tài khoản"
-                        name="account"
+                        name="username"
                         rules={[
                             {
                                 required: true,
@@ -47,18 +58,6 @@ export default function Login() {
                     >
                         <Input.Password placeholder='Nhập mật khẩu....' />
                     </Form.Item>
-
-                    <Form.Item
-                        name="remember"
-                        valuePropName="checked"
-                        wrapperCol={{
-                            offset: 4,
-                            span: 16,
-                        }}
-                    >
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
-
                     <Form.Item
                         wrapperCol={{
                             offset: 10,
