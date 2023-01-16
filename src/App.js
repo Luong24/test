@@ -4,6 +4,7 @@ import { Route, Router, Switch } from 'react-router';
 import HomeTemplate from './Template/HomeTemplate/HomeTemplate';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
+import Schedule from './pages/Schedule/Schedule';
 
 
 
@@ -14,6 +15,7 @@ export default function App() {
       <Switch>
         <Route path='/login' exact component={Login} />
         <HomeTemplate path='/home' exact Component={Home} />
+        <HomeTemplate path='/schedule' exact Component={Schedule} />
       </Switch>
     </Router>
   )

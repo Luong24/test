@@ -1,12 +1,13 @@
 import { Button, Form, Input } from 'antd';
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useAccountStore } from '../../mobxContext/MobxContext';
+
 
 
 export default function Login() {
     const accountStore = useAccountStore()
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         const newData = {
             ...values,
             client_id: "vimc",
@@ -14,11 +15,9 @@ export default function Login() {
             scope: "openid"
         }
         accountStore.getToken(newData)
+        await accountStore.getAccountAction()
     };
-    useEffect(() => {
-        accountStore.getAccountAction()
-    }, [])
-    console.log('data', accountStore.lstAccount)
+
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };

@@ -5,16 +5,15 @@ import 'antd/dist/antd.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { MobxProvider } from './mobxContext/MobxContext';
-// import { store } from './redux/configStore';
-// import { Provider } from 'react-redux';
+import { Provider } from 'mobx-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <Provider>
     <MobxProvider>
       <App />
     </MobxProvider>
-  </React.StrictMode>
+  </Provider>
 
 );
 

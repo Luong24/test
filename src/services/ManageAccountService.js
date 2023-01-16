@@ -1,8 +1,8 @@
 
 
-import { baseServices } from './baseServices';
+import { accoutService } from "./accountService";
 
-class ManageAccountService extends baseServices {
+class ManageAccountService extends accoutService {
 
     // eslint-disable-next-line no-useless-constructor
     constructor() {

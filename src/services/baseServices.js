@@ -7,9 +7,7 @@ export class baseServices {
         return Axios({
             url: `${DOMAIN}/${url}`,
             method: 'POST',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded',
-            },
+            headers: { 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}` },
             data: model
         })
     }
@@ -18,7 +16,7 @@ export class baseServices {
             url: `${DOMAIN}/${url}`,
             method: 'PUT',
             data: model,
-            headers: { 'Token': window.sessionStorage.getItem(TOKEN) }
+            headers: { 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}` }
         })
     }
 
@@ -26,7 +24,7 @@ export class baseServices {
         return Axios({
             url: `${DOMAIN}/${url}`,
             method: 'GET',
-            headers: { 'Token': window.sessionStorage.getItem(TOKEN) }
+            headers: { 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}` }
         })
     }
 
@@ -35,7 +33,7 @@ export class baseServices {
         return Axios({
             url: `${DOMAIN}/${url}`,
             method: 'DELETE',
-            headers: { 'Token': window.sessionStorage.getItem(TOKEN) }
+            headers: { 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}` }
         })
     }
 }

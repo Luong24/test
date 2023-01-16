@@ -1,12 +1,15 @@
-import { DOMAIN2, TOKEN } from "../utils/settings/config"
+import { DOMAIN2 } from "../utils/settings/config"
 import Axios from 'axios';
 
 export class accoutService {
-    get = (url) => {
+    post = (url, model) => {
         return Axios({
             url: `${DOMAIN2}/${url}`,
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}` }
+            method: 'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+            data: model
         })
     }
 }
