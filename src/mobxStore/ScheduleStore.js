@@ -1,20 +1,15 @@
 import { manageScheduleService } from "../services/ManageScheduleService"
+import { useState } from 'react';
 
 
 export function ScheduleStore() {
+    const [schedule, setSchedule] = useState();
     return {
-        lstSchedule: [],
-        async getSchedule() {
-            const result = await manageScheduleService.getWorkSchedule();
-            if (result.status === 200) {
-                this.lstSchedule.forEach(item => {
-                    // this.lstSchedule.push(item);
-                    console.log('item', item)
+        lstSchedule: [schedule],
+        async getSchedule(from_date, to_date) {
+            const result = await manageScheduleService.getWorkSchedule(from_date, to_date);
+            setSchedule(result.data)
 
-                })
-
-                // this.lstSchedule.push(result.data)
-            }
         },
     }
 }

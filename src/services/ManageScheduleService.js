@@ -10,8 +10,8 @@ class ManageScheduleService extends baseServices {
         super();
     }
 
-    getWorkSchedule = () => {
-        return this.get(`api/v1/work-schedules?from_date=2022-07-04&to_date=2022-07-10`)
+    getWorkSchedule = (from_date, to_date) => {
+        return this.get(`api/v1/work-schedules?from_date=${from_date}&to_date=${to_date}`)
     }
 
 }

@@ -1,40 +1,35 @@
 import { DatePicker, Table } from 'antd';
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import moment from 'moment'
 import { ScheduleStore } from '../../mobxStore/ScheduleStore';
 export default function Schedule() {
-    const onChange = (date, dateString) => {
-        console.log('data', moment(date).format('YYYY/MM/DDD'))
-    };
     const schedule = ScheduleStore()
-    console.log('schedule', schedule?.lstSchedule)
-    useEffect(() => {
-        schedule.getSchedule()
-    })
 
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
+
+    const onChange = (date, dateString) => {
+        const monday = new Date(date._d);
+        const sunday = new Date(date._d);
+        var d = monday.getDay();
+        var s = sunday.getDay();
+        var diff = monday.getDate() - d + (d === 0 ? -6 : 1);
+        var diff2 = sunday.getDate() - s + (s === 0 ? 0 : 6);
+        const setMonday = new Date(monday.setDate(diff));
+        const setSunday = new Date(sunday.setDate(diff2));
+        const from_date = new Date(setMonday)
+            .toISOString("yyyy-mm-dd")
+            .split("T")[0];
+        const to_date = new Date(setSunday).toISOString("yyyy-mm-dd").split("T")[0];
+        schedule.getSchedule(from_date, to_date);
+    };
+
     const columns = [
         {
             title: 'Ngày tháng',
-            dataIndex: 'name',
+            dataIndex: 'start_at',
         },
         {
             title: 'Nội dung công việc',
-            dataIndex: 'age',
+            dataIndex: 'event_notice',
         },
         {
             title: 'Tài liệu',
@@ -61,7 +56,7 @@ export default function Schedule() {
                 </div>
                 <button className='border py-1 px-4 text-white flex items-center hover:border-blue-500' style={{ backgroundColor: '#2c65ac' }}><AiOutlinePlusCircle className='mr-1' />Tạo sự kiện mới</button>
             </div>
-            <Table dataSource={schedule?.lstSchedule} columns={columns} />
+            <Table dataSource={schedule?.lstSchedule[0]} columns={columns} />
         </Fragment>
     )
 }
