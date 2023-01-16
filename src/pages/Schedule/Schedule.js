@@ -2,9 +2,11 @@ import { DatePicker, Table } from 'antd';
 import React, { Fragment } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { ScheduleStore } from '../../mobxStore/ScheduleStore';
+import moment from 'moment';
 export default function Schedule() {
     const schedule = ScheduleStore()
 
+    // console.log('first', schedule?.lstSchedule)
 
     const onChange = (date, dateString) => {
         const monday = new Date(date._d);
@@ -26,26 +28,61 @@ export default function Schedule() {
         {
             title: 'Ngày tháng',
             dataIndex: 'start_at',
+            render: (index, item) => {
+                return <div className='font-bold'>
+                    <div>
+                        {moment(item.start_at).format('dddd')}
+                    </div>
+                    <div>
+                        {moment(item.start_at).format('DD/MM')}
+                    </div>
+                </div>
+            },
+            width: '10%'
         },
         {
             title: 'Nội dung công việc',
             dataIndex: 'event_notice',
+            render: (index, item) => {
+                return <Fragment>
+                    <div className='flex font-bold'>
+                        <div >
+                            {moment(item.start_at).format('h:mm a')}
+                        </div>
+                        <div className='mx-2'>to</div>
+                        <div >
+                            {moment(item.end_at).format('h:mm a')}
+                        </div>
+                    </div>
+                    {item.event_notice.replace('<p>', '</p>').replace('<p>', '</p>').split('</p>')}
+                </Fragment>
+            },
+
         },
         {
             title: 'Tài liệu',
             dataIndex: 'preparation',
+            width: '15%'
+
+
         },
         {
             title: 'Thành viên tham gia',
             dataIndex: 'attenders',
+            width: '15%'
+
         },
         {
             title: 'Địa điểm',
             dataIndex: 'location',
+            width: '15%'
+
         },
         {
             title: 'Chủ trì',
             dataIndex: 'host',
+            width: '15%'
+
         },
     ];
     return (
