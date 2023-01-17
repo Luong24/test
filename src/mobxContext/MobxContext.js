@@ -1,10 +1,10 @@
 import React from "react";
-import { createAccountStore } from "../mobxStore/AccountStore";
+import { CreateAccountStore } from "../mobxStore/AccountStore";
 import { useLocalStore } from 'mobx-react'
 const MobxContext = React.createContext(null);
 
 export const MobxProvider = ({ children }) => {
-    const mobxStore = useLocalStore(createAccountStore)
+    const mobxStore = useLocalStore(CreateAccountStore)
     return <MobxContext.Provider value={mobxStore}>
         {children}
     </MobxContext.Provider>

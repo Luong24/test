@@ -3,6 +3,9 @@ import React, { Fragment } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { ScheduleStore } from '../../mobxStore/ScheduleStore';
 import moment from 'moment';
+import { history } from '../../App';
+import { EditOutlined } from '@ant-design/icons';
+import { _create, _schedule } from '../../utils/config/configPath';
 export default function Schedule() {
     const schedule = ScheduleStore()
 
@@ -84,6 +87,18 @@ export default function Schedule() {
             width: '15%'
 
         },
+        {
+            title: '',
+            dataIndex: 'id',
+            render: (text, user) => {
+                return <div className='flex'>
+                    <button className='mx-4 text-green-500 hover:text-green-900' title='Sửa' onClick={() => {
+                    }}>
+                        <EditOutlined style={{ fontSize: 25 }} />
+                    </button>
+                </div>
+            },
+        },
     ];
     return (
         <Fragment>
@@ -91,7 +106,9 @@ export default function Schedule() {
                 <div className='mx-2'>
                     <DatePicker onChange={onChange} picker="week" placeholder='Chọn tuần' />
                 </div>
-                <button className='border py-1 px-4 text-white flex items-center hover:border-blue-500' style={{ backgroundColor: '#2c65ac' }}><AiOutlinePlusCircle className='mr-1' />Tạo sự kiện mới</button>
+                <button className='border py-1 px-4 text-white flex items-center hover:border-blue-500' style={{ backgroundColor: '#2c65ac' }} onClick={() => {
+                    history.push(`${_schedule}${_create}`)
+                }}><AiOutlinePlusCircle className='mr-1' />Tạo sự kiện mới</button>
             </div>
             <Table dataSource={schedule?.lstSchedule[0]} columns={columns} />
         </Fragment>

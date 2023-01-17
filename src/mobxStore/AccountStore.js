@@ -2,9 +2,11 @@ import { history } from "../App";
 import { manageAccountService } from "../services/ManageAccountService";
 import { manageUserService } from "../services/ManageUserService";
 import { TOKEN } from "../utils/settings/config";
-export function createAccountStore() {
+import { useState } from 'react';
+export function CreateAccountStore() {
+    const [account, setAccount] = useState();
     return {
-        lstAccount: [],
+        lstAccount: [account],
         async getToken(data) {
             const result = await manageAccountService.postToken(data);
             if (result.status === 200) {
@@ -14,7 +16,9 @@ export function createAccountStore() {
         },
         async getAccountAction() {
             const result = await manageUserService.getAccount();
-            this.lstAccount.push(result)
+            if (result.status === 200) {
+                setAccount(result.data)
+            }
         },
     }
 }

@@ -15,7 +15,7 @@ export default function Login() {
             scope: "openid"
         }
         accountStore.getToken(newData)
-        await accountStore.getAccountAction()
+        // await accountStore.getAccountAction()
     };
 
     const onFinishFailed = (errorInfo) => {
