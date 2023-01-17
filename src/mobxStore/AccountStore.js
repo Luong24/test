@@ -5,8 +5,11 @@ import { TOKEN } from "../utils/settings/config";
 import { useState } from 'react';
 export function CreateAccountStore() {
     const [account, setAccount] = useState();
+    const [user, setUser] = useState();
+
     return {
         lstAccount: [account],
+        lstUser: [user],
         async getToken(data) {
             const result = await manageAccountService.postToken(data);
             if (result.status === 200) {
@@ -20,5 +23,11 @@ export function CreateAccountStore() {
                 setAccount(result.data)
             }
         },
+        async getUsersAction() {
+            const result = await manageUserService.getUsers();
+            if (result.status === 200) {
+                setUser(result.data)
+            }
+        }
     }
 }

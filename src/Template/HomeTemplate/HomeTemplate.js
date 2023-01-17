@@ -6,6 +6,7 @@ import { history } from '../../App';
 import { AiFillSchedule, AiOutlineFileText, AiOutlineHome, AiOutlineSchedule, } from "react-icons/ai";
 import { CreateAccountStore } from '../../mobxStore/AccountStore';
 import { _home, _login, _schedule } from '../../utils/config/configPath';
+import { BsPersonCircle } from 'react-icons/bs';
 
 
 const { Content, Sider } = Layout;
@@ -32,7 +33,7 @@ export default function HomeTemplate(props) {
 
     const operations = <div className='flex text-white'>
         <div className='flex items-center mx-8'>
-            Đ/c <span className='mx-2 -mt-1 font-bold text-xl'>{account.lstAccount[0] ? uppercase(account.lstAccount[0]?.name_lowercase) : ''}</span>
+            <BsPersonCircle className='mr-2 text-2xl' /> Đ/c <span className='mx-2 -mt-1 font-bold text-xl'>{account.lstAccount[0] ? uppercase(account.lstAccount[0]?.name_lowercase) : ''}</span>
         </div>
         <button onClick={() => {
             history.push(`${_login}`);

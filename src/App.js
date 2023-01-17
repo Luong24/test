@@ -6,7 +6,9 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Schedule from './pages/Schedule/Schedule';
 import CreateSchedule from './pages/Schedule/CreateSchedule';
-import { _create, _home, _login, _schedule } from './utils/config/configPath';
+import { _create, _home, _login, _schedule, _update, _view } from './utils/config/configPath';
+import UpdateSchedule from './pages/Schedule/UpdateSchedule';
+import DetailSchedule from './pages/Schedule/DetailSchedule';
 
 
 
@@ -19,6 +21,9 @@ export default function App() {
         <HomeTemplate path={`${_home}`} exact Component={Home} />
         <HomeTemplate path={`${_schedule}`} exact Component={Schedule} />
         <HomeTemplate path={`${_schedule}${_create}`} exact Component={CreateSchedule} />
+        <HomeTemplate path={`${_schedule}${_update}/:code`} exact Component={UpdateSchedule} />
+        <HomeTemplate path={`${_schedule}${_view}/:code`} exact Component={DetailSchedule} />
+
 
       </Switch>
     </Router>

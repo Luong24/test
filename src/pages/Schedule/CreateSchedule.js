@@ -1,14 +1,16 @@
 import { DatePicker, Select, TimePicker } from 'antd';
 import moment from 'moment';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineUpload } from 'react-icons/ai'
-import MarkdownIt from 'markdown-it';
-import MdEditor from 'react-markdown-editor-lite';
-// import style manually
-import 'react-markdown-editor-lite/lib/index.css';
-
+import { history } from './../../App';
+import { _schedule } from '../../utils/config/configPath';
+import { CreateAccountStore } from '../../mobxStore/AccountStore';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import TextArea from 'antd/lib/input/TextArea';
 
 export default function CreateSchedule() {
+    const user = CreateAccountStore();
     const [startDate, setStartDate] = useState(new Date());
 
     const onChangeDate = (date, dateString) => {
@@ -20,12 +22,6 @@ export default function CreateSchedule() {
     const onChangeEnd = (end, timeEnd) => {
         console.log('first', timeEnd)
     }
-    const mdParser = new MarkdownIt(/* Markdown-it options */);
-
-    // Finish!
-    function handleEditorChange({ html, text }) {
-        console.log('handleEditorChange', html, text);
-    }
 
     const onChange = (value) => {
         console.log(`selected ${value}`);
@@ -33,10 +29,17 @@ export default function CreateSchedule() {
     const onSearch = (value) => {
         console.log('search:', value);
     };
+
+    useEffect(() => {
+        user.getUsersAction()
+    }, [])
+    console.log('first', user.lstUser[0])
     return (
         <Fragment>
             <div className='-mt-4 flex items-center text-lg'>
-                <button className='rounded-full p-2 mr-2 hover:bg-blue-300 hover:text-white'><AiOutlineArrowLeft /></button>
+                <button className='rounded-full p-2 mr-2 hover:bg-blue-300 hover:text-white' onClick={() => {
+                    history.push(`${_schedule}`)
+                }}><AiOutlineArrowLeft /></button>
                 <div className='font-medium'>Tạo sự kiện mới</div>
             </div>
 
@@ -87,7 +90,24 @@ export default function CreateSchedule() {
                                 <div className='flex'>
                                     Nội dung sự kiện
                                 </div>
-                                <MdEditor style={{ height: '350px' }} renderHTML={text => mdParser.render(text)} onChange={handleEditorChange} />
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data=""
+                                    onReady={editor => {
+                                        // You can store the "editor" and use when it is needed.
+                                        console.log('Editor is ready to use!', editor);
+                                    }}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        console.log({ event, editor, data });
+                                    }}
+                                    onBlur={(event, editor) => {
+                                        console.log('Blur.', editor);
+                                    }}
+                                    onFocus={(event, editor) => {
+                                        console.log('Focus.', editor);
+                                    }}
+                                />
                             </div>
                             <div className='my-4'>
                                 <div className='flex'>
@@ -117,22 +137,13 @@ export default function CreateSchedule() {
                                     filterOption={(input, option) =>
                                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    options={[
+                                    options={user.lstUser[0]?.map(item => (
                                         {
-                                            value: 'jack',
-                                            label: 'Jack',
-                                        },
-                                        {
-                                            value: 'lucy',
-                                            label: 'Lucy',
-                                        },
-                                        {
-                                            value: 'tom',
-                                            label: 'Tom',
-                                        },
-                                    ]}
+                                            value: item.code,
+                                            label: item.name,
+                                        }
+                                    ))}
                                 />
-
                             </div>
                         </div>
                         <div className='mx-4 text-end'>

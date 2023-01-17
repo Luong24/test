@@ -4,8 +4,10 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { ScheduleStore } from '../../mobxStore/ScheduleStore';
 import moment from 'moment';
 import { history } from '../../App';
-import { EditOutlined } from '@ant-design/icons';
-import { _create, _schedule } from '../../utils/config/configPath';
+import { _create, _schedule, _view } from '../../utils/config/configPath';
+import { BsCalendar4 } from 'react-icons/bs';
+
+
 export default function Schedule() {
     const schedule = ScheduleStore()
 
@@ -92,9 +94,10 @@ export default function Schedule() {
             dataIndex: 'id',
             render: (text, user) => {
                 return <div className='flex'>
-                    <button className='mx-4 text-green-500 hover:text-green-900' title='Sửa' onClick={() => {
+                    <button className='mx-4 text-green-500 hover:text-green-900' title='Chi tiết' onClick={() => {
+                        history.push(`${_schedule}${_view}/${user.schedule_code}`)
                     }}>
-                        <EditOutlined style={{ fontSize: 25 }} />
+                        <BsCalendar4 style={{ fontSize: 25 }} />
                     </button>
                 </div>
             },

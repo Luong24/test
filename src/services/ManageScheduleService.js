@@ -13,7 +13,9 @@ class ManageScheduleService extends baseServices {
     getWorkSchedule = (from_date, to_date) => {
         return this.get(`api/v1/work-schedules?from_date=${from_date}&to_date=${to_date}`)
     }
-
+    getDetailSchedule = (code) => {
+        return this.get(`api/v1/work-schedules/${code}`)
+    }
 }
 
 
