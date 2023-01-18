@@ -6,6 +6,9 @@ import moment from 'moment';
 import { history } from '../../App';
 import { _create, _schedule, _view } from '../../utils/config/configPath';
 import { BsCalendar4 } from 'react-icons/bs';
+import 'dayjs/locale/vi';
+import locale from 'antd/es/date-picker/locale/vi_VN'
+import './style.css'
 
 
 export default function Schedule() {
@@ -34,7 +37,7 @@ export default function Schedule() {
             title: 'Ngày tháng',
             dataIndex: 'start_at',
             render: (index, item) => {
-                return <div className='font-bold'>
+                return <div className='font-bold text-center'>
                     <div>
                         {moment(item.start_at).format('dddd')}
                     </div>
@@ -107,7 +110,7 @@ export default function Schedule() {
         <Fragment>
             <div className='absolute flex right-4 -mt-16'>
                 <div className='mx-2'>
-                    <DatePicker onChange={onChange} picker="week" placeholder='Chọn tuần' />
+                    <DatePicker locale={locale} onChange={onChange} picker="week" placeholder='Chọn tuần' />
                 </div>
                 <button className='border py-1 px-4 text-white flex items-center hover:border-blue-500' style={{ backgroundColor: '#2c65ac' }} onClick={() => {
                     history.push(`${_schedule}${_create}`)

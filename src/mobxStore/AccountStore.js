@@ -25,6 +25,7 @@ export function CreateAccountStore() {
         },
         async getUsersAction() {
             const result = await manageUserService.getUsers();
+            // console.log('res', result)
             if (result.status === 200) {
                 setUser(result.data)
             }

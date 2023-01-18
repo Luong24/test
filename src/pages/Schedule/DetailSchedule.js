@@ -24,7 +24,7 @@ export default function DetailSchedule(props) {
         }
         return newarray1.join(' ');
     }
-    console.log('first', detail.detailSchedule[0])
+    console.log('first', detail.detailSchedule)
     return (
         <Fragment>
             <div className='-mt-4 flex items-center text-lg'>
@@ -42,51 +42,57 @@ export default function DetailSchedule(props) {
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Ngày thực hiện</dd>
-                            <dd className='w-4/5 flex items-center'><BsCalendar4 className='mr-2' />{moment(detail.detailSchedule[0].start_at).format('DD/MM/YYYY')}</dd>
+                            <dd className='w-4/5 flex items-center'><BsCalendar4 className='mr-2' />{detail.detailSchedule[0]?.start_at ? <div>
+                                {moment(detail.detailSchedule[0]?.start_at).format('DD/MM/YYYY')}
+                            </div> : <i>Không có</i>}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Thời gian bắt đầu</dd>
-                            <dd className='w-4/5 flex items-center'><BsClock className='mr-2' />{moment(detail.detailSchedule[0].start_at).format('HH:mm')}</dd>
+                            <dd className='w-4/5 flex items-center'><BsClock className='mr-2' />{detail.detailSchedule[0]?.start_at ? <div>
+                                {moment(detail.detailSchedule[0]?.start_at).format('HH:mm')}
+                            </div> : <i>Không có</i>}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Thời gian kết thúc</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].end_at ? <div className='flex items-center'><BsClock className='mr-2' />{moment(detail.detailSchedule[0].end_at).format('HH:mm')}</div> : <i>Không rõ</i>}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.end_at ? <div className='flex items-center'><BsClock className='mr-2' />{moment(detail.detailSchedule[0]?.end_at).format('HH:mm')}</div> : <i>Không rõ</i>}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Chủ trì</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].host}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.host}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Địa điểm</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].location}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.location}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Chuẩn bị</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].preparation}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.preparation}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Nội dung sự kiện</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].event_notice.replace('<p>', '</p>').replace('<p>', '</p>').split('</p>')}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.event_notice.replace('<p>', '</p>').replace('<p>', '</p>').split('</p>')}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Tài liệu đính kèm</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].file_ids ? <div>hello</div> : <i>Không có tài liệu đính kèm</i>}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.file_ids ? <div>hello</div> : <i>Không có tài liệu đính kèm</i>}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Thành viên tham gia</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].attenders ? <div>{detail.detailSchedule[0].attenders}</div> : <i>Không có thành viên tham gia</i>}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.attenders ? <div>{detail.detailSchedule[0]?.attenders}</div> : <i>Không có thành viên tham gia</i>}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Thông báo</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].title ? <div>{detail.detailSchedule[0].title}</div> : <i>Không có người nhận thông báo</i>}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.title ? <div>{detail.detailSchedule[0]?.title}</div> : <i>Không có người nhận thông báo</i>}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Ngày tạo</dd>
-                            <dd className='w-4/5'>{uppercase(detail.detailSchedule[0].assignees[0].name_uppercase)} - {moment(detail.detailSchedule[0].created_at).format('DD/MM/YYYY HH:mm')}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.assignees ? <div>
+                                {uppercase(detail.detailSchedule[0]?.assignees[detail.detailSchedule[0]?.assignees.length - 1]?.name_uppercase)} - {moment(detail.detailSchedule[0]?.created_at).format('DD/MM/YYYY HH:mm')}
+                            </div> : <i>Không có</i>}</dd>
                         </div>
                         <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                             <dd className='w-1/5'>Chỉnh sửa lần cuối</dd>
-                            <dd className='w-4/5'>{detail.detailSchedule[0].last_edit_by ? <div>{detail.detailSchedule[0].last_edit_by}</div> : <i>Chưa có thông tin</i>}</dd>
+                            <dd className='w-4/5'>{detail.detailSchedule[0]?.last_edit_by ? <div>{detail.detailSchedule[0]?.last_edit_by}</div> : <i>Chưa có thông tin</i>}</dd>
                         </div>
                     </dl>
                     <div className='flex justify-end'>
