@@ -24,7 +24,6 @@ export default function DetailSchedule(props) {
         }
         return newarray1.join(' ');
     }
-    console.log('first', detail.detailSchedule)
     return (
         <Fragment>
             <div className='-mt-4 flex items-center text-lg'>

@@ -1,4 +1,4 @@
-import { DatePicker, Select, TimePicker } from 'antd';
+import { DatePicker, TimePicker, TreeSelect } from 'antd';
 import moment from 'moment';
 import React, { Fragment, useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineUpload } from 'react-icons/ai'
@@ -12,11 +12,19 @@ import * as Yup from 'yup';
 import 'dayjs/locale/vi';
 import locale from 'antd/es/date-picker/locale/vi_VN'
 
+
 export default function CreateSchedule() {
+
+    useEffect(() => {
+        user.getUsersAction()
+    }, [])
+
     const user = CreateAccountStore();
+
     const [startDate, setStartDate] = useState(new Date());
     const [timeStart, setTimeStart] = useState();
     const [assignees, setAssignees] = useState();
+
     const onChangeDate = (date, dateString) => {
         setStartDate(dateString)
         formik.setFieldValue('start_at', dateString)
@@ -24,7 +32,6 @@ export default function CreateSchedule() {
     const onChangeStart = (start, timeStart) => {
         setTimeStart(timeStart)
     }
-    console.log('first', assignees)
 
     const onChangeEnd = (end, timeEnd) => {
         // console.log('first', timeEnd)
@@ -32,30 +39,50 @@ export default function CreateSchedule() {
 
     }
 
-    const onChange = (value) => {
-        // eslint-disable-next-line no-lone-blocks
-        {
-            user.lstUser[0]?.map((item, index) => {
+    //UPPERCASE
 
-                return (
-                    <Fragment>{item.code === value ? <div>{setAssignees(item.users)}</div> : ''}</Fragment>
-                )
-            }
-            )
+    function uppercase(str) {
+        var array1 = str.split(' ');
+        var newarray1 = [];
+
+        for (var x = 0; x < array1.length; x++) {
+            newarray1.push(array1[x].charAt(0).toUpperCase() + array1[x].slice(1));
         }
-        formik.setFieldValue('assignees', value)
-    };
-    const onSearch = (value) => {
-        console.log('search:', value);
+        return newarray1.join(' ');
+    }
+
+
+    // Tree
+
+    // console.log('first', user.lstUser[0])
+
+    const treeData = user.lstUser[0]?.map((item, index) => {
+        return {
+            title: item?.name,
+            value: item?.code,
+            children: item.users?.map(user => (
+                {
+                    title: `${uppercase(user.name_uppercase.toLowerCase())}`,
+                    value: user.user_code,
+                }
+            ))
+        }
+    }
+    )
+    const [value, setValue] = useState(undefined);
+    const onChange = (newValue) => {
+        setValue(newValue);
     };
 
-    useEffect(() => {
-        user.getUsersAction()
-    }, [])
-    // console.log('ok', user.lstUser)
+
+
+
+
+    //formik
+
     const formik = useFormik({
         initialValues: {
-            start_at: `${moment(startDate).format('DD/MM/YYYY')}  ${timeStart}`,
+            start_at: `${moment(startDate).format('DD/MM/YYYY')} ${timeStart}`,
             end_at: '',
             host: '',
             location: '',
@@ -189,23 +216,25 @@ export default function CreateSchedule() {
                                 <div className='flex'>
                                     Thông báo
                                 </div>
-                                <Select
-                                    name='assignees'
-                                    style={{ width: '100%' }}
+                                <TreeSelect
                                     showSearch
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                    value={value}
+                                    dropdownStyle={{
+                                        minHeight: 100,
+                                        overflow: 'auto',
+                                    }}
                                     placeholder="--Chọn người nhận thông báo--"
-                                    optionFilterProp="children"
+                                    allowClear
+                                    treeDefaultExpandAll
+
                                     onChange={onChange}
-                                    onSearch={onSearch}
-                                    filterOption={(input, option) =>
-                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                    }
-                                    options={user.lstUser[0]?.map(item => (
-                                        {
-                                            value: item.code,
-                                            label: item.name,
-                                        }
-                                    ))}
+                                    treeData={treeData}
+                                    treeCheckable={true}
+
+
                                 />
                             </div>
                         </div>
