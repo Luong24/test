@@ -1,4 +1,4 @@
-import { DatePicker, TimePicker, TreeSelect } from 'antd';
+import { DatePicker, TimePicker, TreeSelect, Upload, message } from 'antd';
 import moment from 'moment';
 import React, { Fragment, useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineUpload } from 'react-icons/ai'
@@ -20,22 +20,31 @@ export default function CreateSchedule() {
     }, [])
 
     const user = CreateAccountStore();
+    // console.log('first', user.lstUser[0])
 
     const [startDate, setStartDate] = useState(new Date());
-    const [timeStart, setTimeStart] = useState();
-    const [assignees, setAssignees] = useState();
+    // const [timeStartt, setTimeStartt] = useState();
+    // const [assignees, setAssignees] = useState();
 
     const onChangeDate = (date, dateString) => {
-        setStartDate(dateString)
-        formik.setFieldValue('start_at', dateString)
+        setStartDate(date)
+        // console.log('first', date)
+        // formik.setFieldValue('start_at', date)
+
     };
+    // let today = new Date();
     const onChangeStart = (start, timeStart) => {
-        setTimeStart(timeStart)
+        // setTimeStartt(start)
+        formik.setFieldValue('start_at', start._d)
+        console.log('first', start._d)
     }
 
+    // console.log('h', startDate);
+
     const onChangeEnd = (end, timeEnd) => {
-        // console.log('first', timeEnd)
-        formik.setFieldValue('end_at', timeEnd)
+        formik.setFieldValue('end_at', end._d)
+        // console.log('first', end)
+
 
     }
 
@@ -54,8 +63,6 @@ export default function CreateSchedule() {
 
     // Tree
 
-    // console.log('first', user.lstUser[0])
-
     const treeData = user.lstUser[0]?.map((item, index) => {
         return {
             title: item?.name,
@@ -63,15 +70,41 @@ export default function CreateSchedule() {
             children: item.users?.map(user => (
                 {
                     title: `${uppercase(user.name_uppercase.toLowerCase())}`,
-                    value: user.user_code,
+                    value: user.user_name
+                    // 'assignee_type': 'USER',
+                    // 'permission': 'VIEW',
+                    ,
                 }
             ))
         }
     }
     )
-    const [value, setValue] = useState(undefined);
+    // const [title, setValue] = useState(undefined);
     const onChange = (newValue) => {
-        setValue(newValue);
+        // setValue(newValue);
+        // console.log('first',)
+        formik.setFieldValue('assignees', newValue)
+
+    };
+
+    //file
+
+    const props = {
+        name: 'file',
+        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+        headers: {
+            authorization: 'authorization-text',
+        },
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} tải lên thành công!`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} tải lên thất bại!`);
+            }
+        },
     };
 
 
@@ -82,15 +115,15 @@ export default function CreateSchedule() {
 
     const formik = useFormik({
         initialValues: {
-            start_at: `${moment(startDate).format('DD/MM/YYYY')} ${timeStart}`,
+            start_at: '',
             end_at: '',
+            file_ids: [],
             host: '',
             location: '',
             preparation: '',
             event_notice: '',
             attenders: '',
             assignees: [],
-            last_edit_by: ''
         },
         validationSchema: Yup.object({
             // start_at: Yup.string()
@@ -135,7 +168,13 @@ export default function CreateSchedule() {
                                 <div className='flex'>
                                     <div className='text-red-500 mt-1 mr-1'>*</div> Ngày thực hiện
                                 </div>
-                                <DatePicker locale={locale} style={{ width: '100%' }} name='start_at' placeholder='Chọn ngày thực hiện' onChange={onChangeDate} defaultValue={moment(startDate)} format='DD/MM/YYYY' />
+                                <DatePicker locale={locale}
+                                    style={{ width: '100%' }}
+                                    name='start_at'
+                                    placeholder='Chọn ngày thực hiện'
+                                    onChange={onChangeDate}
+                                    defaultValue={moment(startDate, "DD/MM/YYYY")}
+                                    format='DD/MM/YYYY' />
                                 {/* {formik.errors.start_at && formik.touched.start_at && (
                                     <p className='m-0 mt-1 text-red-600'>{formik.errors.start_at}</p>
                                 )} */}
@@ -145,13 +184,19 @@ export default function CreateSchedule() {
                                 <div className='flex'>
                                     <div className='text-red-500 mt-1 mr-1'>*</div> Thời gian bắt đầu
                                 </div>
-                                <TimePicker locale={locale} style={{ width: '100%' }} placeholder='Bắt đầu' onChange={onChangeStart} format='HH:mm' />
+                                <TimePicker locale={locale}
+                                    style={{ width: '100%' }}
+                                    name='start_at'
+                                    defaultOpenValue={moment(startDate)}
+                                    placeholder='Bắt đầu'
+                                    onChange={onChangeStart}
+                                    format='HH:mm' />
                             </div>
                             <div className='mx-4'>
                                 <div className='flex'>
                                     Thời gian kết thúc
                                 </div>
-                                <TimePicker locale={locale} style={{ width: '100%' }} name='end_at' placeholder='Kết thúc' onChange={onChangeEnd} format='HH:mm' />
+                                <TimePicker locale={locale} style={{ width: '100%' }} name='end_at' placeholder='Kết thúc' defaultOpenValue={moment(startDate)} onChange={onChangeEnd} format='HH:mm' />
                             </div>
 
                         </div>
@@ -202,9 +247,12 @@ export default function CreateSchedule() {
                                 <div className='flex'>
                                     Tài liệu đính kèm
                                 </div>
-                                <button className='border rounded-md flex items-center px-2 py-1 hover:border-blue-300 '>
-                                    <AiOutlineUpload className='mx-2' />Tài liệu đính kèm
-                                </button>
+                                <Upload {...props}>
+                                    <button className='border rounded-md flex items-center px-2 py-1 hover:border-blue-300 '>
+                                        <AiOutlineUpload className='mx-2' />Tài liệu đính kèm
+                                    </button>
+                                </Upload>
+
                             </div>
                             <div className='my-4'>
                                 <div className='flex'>
@@ -217,11 +265,12 @@ export default function CreateSchedule() {
                                     Thông báo
                                 </div>
                                 <TreeSelect
+                                    name='assignees'
                                     showSearch
                                     style={{
                                         width: '100%',
                                     }}
-                                    value={value}
+                                    // value={title}
                                     dropdownStyle={{
                                         minHeight: 100,
                                         overflow: 'auto',

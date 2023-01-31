@@ -1,5 +1,7 @@
+import { history } from "../App";
 import { manageScheduleService } from "../services/ManageScheduleService"
 import { useState } from 'react';
+import { _schedule } from "../utils/config/configPath";
 
 
 export function ScheduleStore() {
@@ -19,7 +21,12 @@ export function ScheduleStore() {
             if (result.status === 200) {
                 setDetailSchedule(result.data)
             }
+        },
+        async delSchedule(code) {
+            const result = await manageScheduleService.deleteSchedule(code);
+            if (result.status === 200) {
+                history.push(`${_schedule}`)
+            }
         }
-
     }
 }

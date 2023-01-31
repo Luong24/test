@@ -1,5 +1,5 @@
 import { DatePicker, Table } from 'antd';
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { ScheduleStore } from '../../mobxStore/ScheduleStore';
 import moment from 'moment';
@@ -13,8 +13,7 @@ import './style.css'
 
 export default function Schedule() {
     const schedule = ScheduleStore()
-
-    // console.log('first', schedule?.lstSchedule)
+    const [startDate, setStartDate] = useState(new Date());
 
     const onChange = (date, dateString) => {
         const monday = new Date(date._d);
@@ -31,7 +30,11 @@ export default function Schedule() {
         const to_date = new Date(setSunday).toISOString("yyyy-mm-dd").split("T")[0];
         schedule.getSchedule(from_date, to_date);
     };
-
+    const stringToHTML = (str) => {
+        var dom = document.createElement("div");
+        dom.innerHTML = str;
+        return dom;
+    };
     const columns = [
         {
             title: 'Ngày tháng',
@@ -62,7 +65,8 @@ export default function Schedule() {
                             {moment(item.end_at).format('h:mm a')}
                         </div>
                     </div>
-                    {item.event_notice.replace('<p>', '</p>').replace('<p>', '</p>').split('</p>')}
+                    {stringToHTML(item.event_notice).textContent}
+                    {/* {CKEditor.instances.item.event_notice.getBody().getText()} */}
                 </Fragment>
             },
 
@@ -110,7 +114,7 @@ export default function Schedule() {
         <Fragment>
             <div className='absolute flex right-4 -mt-16'>
                 <div className='mx-2'>
-                    <DatePicker locale={locale} onChange={onChange} picker="week" placeholder='Chọn tuần' />
+                    <DatePicker locale={locale} onChange={onChange} defaultValue={moment(startDate)} picker="week" placeholder='Chọn tuần' />
                 </div>
                 <button className='border py-1 px-4 text-white flex items-center hover:border-blue-500' style={{ backgroundColor: '#2c65ac' }} onClick={() => {
                     history.push(`${_schedule}${_create}`)

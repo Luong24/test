@@ -16,6 +16,9 @@ class ManageScheduleService extends baseServices {
     getDetailSchedule = (code) => {
         return this.get(`api/v1/work-schedules/${code}`)
     }
+    deleteSchedule = (code) => {
+        return this.delete(`api/v1/work-schedules/${code}`)
+    }
 }
 
 
