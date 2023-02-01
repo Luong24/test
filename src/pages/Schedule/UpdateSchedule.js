@@ -87,7 +87,6 @@ export default function UpdateSchedule(props) {
         enableReinitialize: true,
         initialValues: {
             assign_person_update: { new_items: [], remove_items: [] },
-
             start_at: detail.detailSchedule[0]?.start_at,
             end_at: detail.detailSchedule[0]?.end_at,
             file_ids: [],

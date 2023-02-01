@@ -12,6 +12,9 @@ class ManageNewService extends baseServices {
     getAllNew = () => {
         return this.get(`api/v1/news?page=0&size=10`)
     }
+    getDetail = () => {
+        return this.get(`api/v1/news/122`)
+    }
 }
 
 

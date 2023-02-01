@@ -1,5 +1,5 @@
 import { DatePicker, Table } from 'antd';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { ScheduleStore } from '../../mobxStore/ScheduleStore';
 import moment from 'moment';
@@ -14,6 +14,12 @@ import './style.css'
 export default function Schedule() {
     const schedule = ScheduleStore()
     const [startDate, setStartDate] = useState(new Date());
+
+
+    const names = new Set();
+    useEffect(() => {
+        // names.clear();
+    }, [])
 
     const onChange = (date, dateString) => {
         const monday = new Date(date._d);
@@ -35,19 +41,33 @@ export default function Schedule() {
         dom.innerHTML = str;
         return dom;
     };
+    // console.log('data', moment(schedule?.lstSchedule[0][0].start_at).format('DDMMYYYY'))
     const columns = [
         {
             title: 'Ngày tháng',
             dataIndex: 'start_at',
-            render: (index, item) => {
-                return <div className='font-bold text-center'>
-                    <div>
-                        {moment(item.start_at).format('dddd')}
-                    </div>
-                    <div>
-                        {moment(item.start_at).format('DD/MM')}
-                    </div>
-                </div>
+            rowSpan: 1,
+            render: (value, row, index) => {
+                const date = moment(value).format("DDMMYYYY")
+                const obj = {
+                    children: [
+                        moment(value).format('dddd'),
+                        <br />,
+                        moment(value).format('DD/MM'),
+
+                    ],
+                    props: {},
+                };
+                console.log('first', names.has(date))
+                if (names.has(date)) {
+                    obj.props.rowSpan = 0;
+                } else {
+                    const occurCount = schedule.lstSchedule[0].filter((data) => moment(data.start_at).format("DDMMYYYY") === date).length;
+                    obj.props.rowSpan = occurCount;
+                    names.add(moment(value).format("DDMMYYYY"));
+                }
+
+                return obj;
             },
             width: '10%'
         },
