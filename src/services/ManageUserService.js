@@ -11,7 +11,7 @@ class ManageUserService extends baseServices {
         return this.get(`api/v1/users/current-user`)
     }
     getUsers = () => {
-        return this.get(`api/v1/departments/users?company_code=CPN7451091748209`)
+        return this.get(`api/v1/departments/users`)
     }
 }
 

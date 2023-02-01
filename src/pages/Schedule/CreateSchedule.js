@@ -11,6 +11,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import 'dayjs/locale/vi';
 import locale from 'antd/es/date-picker/locale/vi_VN'
+import { ScheduleStore } from '../../mobxStore/ScheduleStore';
 
 
 export default function CreateSchedule() {
@@ -21,29 +22,28 @@ export default function CreateSchedule() {
 
     const user = CreateAccountStore();
     // console.log('first', user.lstUser[0])
+    const schedule = ScheduleStore();
 
     const [startDate, setStartDate] = useState(new Date());
-    // const [timeStartt, setTimeStartt] = useState();
-    // const [assignees, setAssignees] = useState();
+
 
     const onChangeDate = (date, dateString) => {
-        setStartDate(date)
-        // console.log('first', date)
-        // formik.setFieldValue('start_at', date)
+        setStartDate(moment(date).format())
+
 
     };
-    // let today = new Date();
+
     const onChangeStart = (start, timeStart) => {
-        // setTimeStartt(start)
-        formik.setFieldValue('start_at', start._d)
-        console.log('first', start._d)
+
+        formik.setFieldValue('start_at', moment(start._d).format())
+
     }
 
-    // console.log('h', startDate);
+
 
     const onChangeEnd = (end, timeEnd) => {
-        formik.setFieldValue('end_at', end._d)
-        // console.log('first', end)
+        formik.setFieldValue('end_at', moment(end._d).format())
+
 
 
     }
@@ -70,20 +70,15 @@ export default function CreateSchedule() {
             children: item.users?.map(user => (
                 {
                     title: `${uppercase(user.name_uppercase.toLowerCase())}`,
-                    value: user.user_name
-                    // 'assignee_type': 'USER',
-                    // 'permission': 'VIEW',
-                    ,
+                    value: user.user_name,
                 }
             ))
         }
     }
     )
-    // const [title, setValue] = useState(undefined);
     const onChange = (newValue) => {
-        // setValue(newValue);
-        // console.log('first',)
-        formik.setFieldValue('assignees', newValue)
+
+        // formik.setFieldValue('assignees', newValue)
 
     };
 
@@ -91,13 +86,17 @@ export default function CreateSchedule() {
 
     const props = {
         name: 'file',
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+        action: '//jsonplaceholder.typicode.com/posts/',
         headers: {
             authorization: 'authorization-text',
         },
         onChange(info) {
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    // console.log(e.target.result);
+                }
+                reader.readAsText(info.file.originFileObj);
             }
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} tải lên thành công!`);
@@ -123,179 +122,157 @@ export default function CreateSchedule() {
             preparation: '',
             event_notice: '',
             attenders: '',
-            assignees: [],
+            // assignees: [],
+            title: ''
+
         },
         validationSchema: Yup.object({
             // start_at: Yup.string()
             //     .required("Không được để trống !"),
 
-            // Password: Yup.string()
-            //     .min(6, "Tối thiểu 6 kí tự")
-            //     .required("Không được trống !"),
-
-            // Role: Yup.string()
-            //     .required("Không được trống !"),
-
-            // Address: Yup.string()
-            //     .required("Không được trống !"),
-
-            // PhoneNumber: Yup.string()
-            //     .matches(/(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/, {
-            //         message: "Số điện thoại chưa đúng",
-            //         excludeEmptyString: false,
-            //     })
-            //     .required("Không được trống !"),
-
         }),
         onSubmit: values => {
-            console.log('first', values)
+            schedule.createSchedule(values)
         }
     })
     return (
         <Fragment>
-            <div className='-mt-4 flex items-center text-lg'>
-                <button className='rounded-full p-2 mr-2 hover:bg-blue-300 hover:text-white' onClick={() => {
+            <div className='-mt-10 flex items-center text-lg'>
+                <button className='rounded-full p-2 mr-2 hover:bg-white hover:text-blue-500' onClick={() => {
                     history.push(`${_schedule}`)
                 }}><AiOutlineArrowLeft /></button>
                 <div className='font-medium'>Tạo sự kiện mới</div>
             </div>
-
-            <form onSubmit={formik.handleSubmit}>
-                <div className='grid grid-cols-5'>
-                    <div className='col-start-2 col-span-3'>
-                        <div className='grid grid-cols-3'>
-                            <div className='mx-4'>
-                                <div className='flex'>
-                                    <div className='text-red-500 mt-1 mr-1'>*</div> Ngày thực hiện
-                                </div>
-                                <DatePicker locale={locale}
-                                    style={{ width: '100%' }}
-                                    name='start_at'
-                                    placeholder='Chọn ngày thực hiện'
-                                    onChange={onChangeDate}
-                                    defaultValue={moment(startDate, "DD/MM/YYYY")}
-                                    format='DD/MM/YYYY' />
-                                {/* {formik.errors.start_at && formik.touched.start_at && (
+            <div className='bg-white rounded-md'>
+                <form onSubmit={formik.handleSubmit}>
+                    <div className='grid grid-cols-5 mt-4 py-8'>
+                        <div className='col-start-2 col-span-3'>
+                            <div className='grid grid-cols-3'>
+                                <div className='mx-4'>
+                                    <div className='flex'>
+                                        <div className='text-red-500 mt-1 mr-1'>*</div> Ngày thực hiện
+                                    </div>
+                                    <DatePicker locale={locale}
+                                        style={{ width: '100%' }}
+                                        name='start_at'
+                                        placeholder='Chọn ngày thực hiện'
+                                        onChange={onChangeDate}
+                                        defaultValue={moment(startDate, "DD/MM/YYYY")}
+                                        format='DD/MM/YYYY' />
+                                    {/* {formik.errors.start_at && formik.touched.start_at && (
                                     <p className='m-0 mt-1 text-red-600'>{formik.errors.start_at}</p>
                                 )} */}
 
+                                </div>
+                                <div className='mx-4'>
+                                    <div className='flex'>
+                                        <div className='text-red-500 mt-1 mr-1'>*</div> Thời gian bắt đầu
+                                    </div>
+                                    <TimePicker locale={locale}
+                                        style={{ width: '100%' }}
+                                        name='start_at'
+                                        defaultOpenValue={moment(startDate)}
+                                        placeholder='Bắt đầu'
+                                        onChange={onChangeStart}
+                                        format='HH:mm' />
+                                </div>
+                                <div className='mx-4'>
+                                    <div className='flex'>
+                                        Thời gian kết thúc
+                                    </div>
+                                    <TimePicker locale={locale} style={{ width: '100%' }} name='end_at' placeholder='Kết thúc' defaultOpenValue={moment(startDate)} onChange={onChangeEnd} format='HH:mm' />
+                                </div>
+
                             </div>
                             <div className='mx-4'>
-                                <div className='flex'>
-                                    <div className='text-red-500 mt-1 mr-1'>*</div> Thời gian bắt đầu
+                                <div className='my-4'>
+                                    <div className='flex'>
+                                        <div className='text-red-500 mt-1 mr-1'>*</div> Chủ trì
+                                    </div>
+                                    <input type="text" name='host' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="Chủ trì" />
                                 </div>
-                                <TimePicker locale={locale}
-                                    style={{ width: '100%' }}
-                                    name='start_at'
-                                    defaultOpenValue={moment(startDate)}
-                                    placeholder='Bắt đầu'
-                                    onChange={onChangeStart}
-                                    format='HH:mm' />
-                            </div>
-                            <div className='mx-4'>
-                                <div className='flex'>
-                                    Thời gian kết thúc
+                                <div className='my-4'>
+                                    <div className='flex'>
+                                        <div className='text-red-500 mt-1 mr-1'>*</div> Địa điểm
+                                    </div>
+                                    <input type="text" name='location' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="Địa điểm" />
                                 </div>
-                                <TimePicker locale={locale} style={{ width: '100%' }} name='end_at' placeholder='Kết thúc' defaultOpenValue={moment(startDate)} onChange={onChangeEnd} format='HH:mm' />
-                            </div>
+                                <div className='my-4'>
+                                    <div className='flex'>
+                                        Chuẩn bị
+                                    </div>
+                                    <input type="text" name='preparation' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="Chuẩn bị" />
+                                </div>
+                                <div className='my-4'>
+                                    <div className='flex'>
+                                        Nội dung sự kiện
+                                    </div>
+                                    <CKEditor
+                                        editor={ClassicEditor}
+                                        data=""
+                                        name='event_notice'
 
-                        </div>
-                        <div className='mx-4'>
-                            <div className='my-4'>
-                                <div className='flex'>
-                                    <div className='text-red-500 mt-1 mr-1'>*</div> Chủ trì
+                                        onChange={(event, editor) => {
+                                            const data = editor.getData();
+                                            formik.setFieldValue('event_notice', data)
+                                        }}
+                                    />
                                 </div>
-                                <input type="text" name='host' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="Chủ trì" />
-                            </div>
-                            <div className='my-4'>
-                                <div className='flex'>
-                                    <div className='text-red-500 mt-1 mr-1'>*</div> Địa điểm
-                                </div>
-                                <input type="text" name='location' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="Địa điểm" />
-                            </div>
-                            <div className='my-4'>
-                                <div className='flex'>
-                                    Chuẩn bị
-                                </div>
-                                <input type="text" name='preparation' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="Chuẩn bị" />
-                            </div>
-                            <div className='my-4'>
-                                <div className='flex'>
-                                    Nội dung sự kiện
-                                </div>
-                                <CKEditor
-                                    editor={ClassicEditor}
-                                    data=""
-                                    name='event_notice'
-                                    // onReady={editor => {
-                                    //     // You can store the "editor" and use when it is needed.
-                                    //     console.log('Editor is ready to use!', editor);
-                                    // }}
-                                    onChange={(event, editor) => {
-                                        const data = editor.getData();
-                                        formik.setFieldValue('event_notice', data)
-                                    }}
-                                // onBlur={(event, editor) => {
-                                //     console.log('Blur.', editor);
-                                // }}
-                                // onFocus={(event, editor) => {
-                                //     console.log('Focus.', editor);
-                                // }}
-                                />
-                            </div>
-                            <div className='my-4'>
-                                <div className='flex'>
-                                    Tài liệu đính kèm
-                                </div>
-                                <Upload {...props}>
-                                    <button className='border rounded-md flex items-center px-2 py-1 hover:border-blue-300 '>
-                                        <AiOutlineUpload className='mx-2' />Tài liệu đính kèm
-                                    </button>
-                                </Upload>
+                                <div className='my-4'>
+                                    <div className='flex'>
+                                        Tài liệu đính kèm
+                                    </div>
+                                    <Upload {...props} accept=".docx, .pdf">
+                                        <button className='border rounded-md flex items-center px-2 py-1 hover:border-blue-300 '>
+                                            <AiOutlineUpload className='mx-2' />Tài liệu đính kèm
+                                        </button>
+                                    </Upload>
 
-                            </div>
-                            <div className='my-4'>
-                                <div className='flex'>
-                                    Thành viên tham gia
                                 </div>
-                                <input type="text" name='attenders' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="--Thành viên tham gia--" />
-                            </div>
-                            <div className='my-4'>
-                                <div className='flex'>
-                                    Thông báo
+                                <div className='my-4'>
+                                    <div className='flex'>
+                                        Thành viên tham gia
+                                    </div>
+                                    <input type="text" name='attenders' onChange={formik.handleChange} className='p-2 border-gray border rounded-lg focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300 w-full' placeholder="--Thành viên tham gia--" />
                                 </div>
-                                <TreeSelect
-                                    name='assignees'
-                                    showSearch
-                                    style={{
-                                        width: '100%',
-                                    }}
-                                    // value={title}
-                                    dropdownStyle={{
-                                        minHeight: 100,
-                                        overflow: 'auto',
-                                    }}
-                                    placeholder="--Chọn người nhận thông báo--"
-                                    allowClear
-                                    treeDefaultExpandAll
+                                <div className='my-4'>
+                                    <div className='flex'>
+                                        Thông báo
+                                    </div>
+                                    <TreeSelect
+                                        name='assignees'
+                                        showSearch
+                                        style={{
+                                            width: '100%',
+                                        }}
+                                        // value={title}
+                                        dropdownStyle={{
+                                            minHeight: 100,
+                                            overflow: 'auto',
+                                        }}
+                                        placeholder="--Chọn người nhận thông báo--"
+                                        allowClear
+                                        treeDefaultExpandAll
 
-                                    onChange={onChange}
-                                    treeData={treeData}
-                                    treeCheckable={true}
+                                        onChange={onChange}
+                                        treeData={treeData}
+                                        treeCheckable={true}
 
 
-                                />
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className='mx-4 text-end'>
-                            <button type='submit' className='border rounded text-white px-2 py-1' style={{ backgroundColor: '#2c65ac' }}>
-                                Tạo mới sự kiện
-                            </button>
+                            <div className='mx-4 text-end'>
+                                <button type='submit' className='border rounded text-white px-2 py-1' style={{ backgroundColor: '#2c65ac' }}>
+                                    Tạo mới sự kiện
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
+
 
         </Fragment >
     )

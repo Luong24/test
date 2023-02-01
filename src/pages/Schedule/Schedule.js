@@ -66,7 +66,6 @@ export default function Schedule() {
                         </div>
                     </div>
                     {stringToHTML(item.event_notice).textContent}
-                    {/* {CKEditor.instances.item.event_notice.getBody().getText()} */}
                 </Fragment>
             },
 
@@ -120,7 +119,9 @@ export default function Schedule() {
                     history.push(`${_schedule}${_create}`)
                 }}><AiOutlinePlusCircle className='mr-1' />Tạo sự kiện mới</button>
             </div>
-            <Table dataSource={schedule?.lstSchedule[0]} columns={columns} />
+            <div className='bg-white rounded-md -mt-4' style={{ minHeight: '600px' }}>
+                <Table className='p-4' dataSource={schedule?.lstSchedule[0]} columns={columns} />
+            </div>
         </Fragment>
     )
 }

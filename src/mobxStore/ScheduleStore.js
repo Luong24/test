@@ -22,6 +22,18 @@ export function ScheduleStore() {
                 setDetailSchedule(result.data)
             }
         },
+        async createSchedule(data) {
+            const result = await manageScheduleService.postSchedule(data)
+            if (result.status === 200) {
+                history.push(`${_schedule}`)
+            }
+        },
+        async updateSchedule(code, data) {
+            const result = await manageScheduleService.putSchedule(code, data)
+            if (result.status === 200) {
+                history.push(`${_schedule}`)
+            }
+        },
         async delSchedule(code) {
             const result = await manageScheduleService.deleteSchedule(code);
             if (result.status === 200) {

@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { history } from '../../App';
 import { AiFillSchedule, AiOutlineFileText, AiOutlineHome, AiOutlineSchedule, } from "react-icons/ai";
 import { CreateAccountStore } from '../../mobxStore/AccountStore';
-import { _home, _login, _schedule } from '../../utils/config/configPath';
+import { _home, _login, _new, _schedule } from '../../utils/config/configPath';
 import { BsPersonCircle } from 'react-icons/bs';
 
 
@@ -58,7 +58,7 @@ export default function HomeTemplate(props) {
                             <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to={`${_schedule}`} ><AiOutlineSchedule className='mr-2' />Lịch cơ quan</NavLink>
                         </Menu.Item>
                         <Menu.Item key='3' >
-                            <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to='/home'><AiOutlineFileText className='mr-2' />Văn bản</NavLink>
+                            <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to={`${_new}`}><AiOutlineFileText className='mr-2' />Thông báo chung</NavLink>
                         </Menu.Item>
                         <Menu.Item key='4'  >
                             <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to='/home'><AiFillSchedule className='mr-2' />Nhiệm vụ</NavLink>
@@ -81,7 +81,7 @@ export default function HomeTemplate(props) {
                         </Breadcrumb>
                     </div>
                     <Content style={{ margin: '0 16px', }}>
-                        <div className='bg-white rounded-md' style={{ padding: 24, minHeight: 360, }}>
+                        <div style={{ padding: 24, minHeight: 360, }}>
 
                             <Component {...propsRoute} />
 
