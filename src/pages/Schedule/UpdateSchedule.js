@@ -105,7 +105,6 @@ export default function UpdateSchedule(props) {
 
         }),
         onSubmit: values => {
-
             detail.updateSchedule(code, values)
         }
     })
@@ -222,7 +221,7 @@ export default function UpdateSchedule(props) {
                             </div>
                             <div className='mx-4 text-end'>
                                 <button type='submit' className='border rounded text-white px-2 py-1' style={{ backgroundColor: '#2c65ac' }}>
-                                    Tạo mới sự kiện
+                                    Cập nhật sự kiện
                                 </button>
                             </div>
                         </div>

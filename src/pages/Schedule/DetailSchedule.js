@@ -13,9 +13,6 @@ export default function DetailSchedule(props) {
     let { code } = props.match.params;
     const detail = ScheduleStore();
 
-    // console.log('first', detail.detailSchedule[0].assignees.length)
-
-
     useEffect(() => {
         detail.getDetailSchedule(code)
     }, [])
@@ -28,11 +25,6 @@ export default function DetailSchedule(props) {
         }
         return newarray1.join(' ');
     }
-    const stringToHTML = (str) => {
-        var dom = document.createElement("div");
-        dom.innerHTML = str;
-        return dom;
-    };
 
     return (
         <Fragment>
@@ -80,11 +72,12 @@ export default function DetailSchedule(props) {
                             </div>
                             <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                                 <dd className='w-1/5'>Nội dung sự kiện</dd>
-                                <dd className='w-4/5'>{stringToHTML(detail.detailSchedule[0]?.event_notice).textContent}</dd>
+                                <dd className='w-4/5'>{detail.detailSchedule[0]?.event_notice ? <div dangerouslySetInnerHTML={{ __html: detail.detailSchedule[0]?.event_notice }}>
+                                </div> : <i>Không có nội dung sự kiện</i>}</dd>
                             </div>
                             <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                                 <dd className='w-1/5'>Tài liệu đính kèm</dd>
-                                <dd className='w-4/5'>{detail.detailSchedule[0]?.file_ids ? <div>hello</div> : <i>Không có tài liệu đính kèm</i>}</dd>
+                                <dd className='w-4/5'>{detail.detailSchedule[0]?.file_ids.length !== 0 ? <div>hello</div> : <i>Không có tài liệu đính kèm</i>}</dd>
                             </div>
                             <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                                 <dd className='w-1/5'>Thành viên tham gia</dd>
@@ -104,7 +97,9 @@ export default function DetailSchedule(props) {
                             </div>
                             <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                                 <dd className='w-1/5'>Chỉnh sửa lần cuối</dd>
-                                <dd className='w-4/5'>{detail.detailSchedule[0]?.last_edit_by ? <div>{detail.detailSchedule[0]?.last_edit_by}</div> : <i>Chưa có thông tin</i>}</dd>
+                                <dd className='w-4/5'>{detail.detailSchedule[0]?.last_edit_by ? <div>
+                                    {uppercase(detail.detailSchedule[0]?.last_edit_by.name_lowercase)} - {moment(detail.detailSchedule[0]?.update_at).format('DD/MM/YYYY HH:mm')}
+                                </div> : <i>Chưa có thông tin</i>}</dd>
                             </div>
                         </dl>
                         <div className='flex justify-end'>

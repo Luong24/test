@@ -15,13 +15,26 @@ export default function Schedule() {
     const schedule = ScheduleStore()
     const [startDate, setStartDate] = useState(new Date());
 
+    //Hien thi lich theo date
+    const monday = new Date(startDate);
+    const sunday = new Date(startDate);
+    var d = monday.getDay();
+    var s = sunday.getDay();
+    var diff = monday.getDate() - d + (d === 0 ? -6 : 1);
+    var diff2 = sunday.getDate() - s + (s === 0 ? 0 : 6);
+    const setMonday = new Date(monday.setDate(diff));
+    const setSunday = new Date(sunday.setDate(diff2));
+    const from_date = new Date(setMonday)
+        .toISOString("yyyy-mm-dd")
+        .split("T")[0];
+    const to_date = new Date(setSunday).toISOString("yyyy-mm-dd").split("T")[0];
 
-    const names = new Set();
     useEffect(() => {
-        // names.clear();
+        schedule.getSchedule(from_date, to_date);
     }, [])
 
     const onChange = (date, dateString) => {
+        // console.log('first', date._d)
         const monday = new Date(date._d);
         const sunday = new Date(date._d);
         var d = monday.getDay();
@@ -36,12 +49,15 @@ export default function Schedule() {
         const to_date = new Date(setSunday).toISOString("yyyy-mm-dd").split("T")[0];
         schedule.getSchedule(from_date, to_date);
     };
+
+
     const stringToHTML = (str) => {
         var dom = document.createElement("div");
         dom.innerHTML = str;
         return dom;
     };
-    // console.log('data', moment(schedule?.lstSchedule[0][0].start_at).format('DDMMYYYY'))
+
+    const names = new Set();
     const columns = [
         {
             title: 'Ngày tháng',
@@ -58,7 +74,6 @@ export default function Schedule() {
                     ],
                     props: {},
                 };
-                console.log('first', names.has(date))
                 if (names.has(date)) {
                     obj.props.rowSpan = 0;
                 } else {
@@ -85,7 +100,10 @@ export default function Schedule() {
                             {moment(item.end_at).format('h:mm a')}
                         </div>
                     </div>
-                    {stringToHTML(item.event_notice).textContent}
+                    <div dangerouslySetInnerHTML={{ __html: item.event_notice }}>
+
+                    </div>
+                    {/* {stringToHTML(item.event_notice).textContent} */}
                 </Fragment>
             },
 

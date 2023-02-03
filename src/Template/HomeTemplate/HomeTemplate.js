@@ -52,16 +52,16 @@ export default function HomeTemplate(props) {
                     </div>
                     <Menu defaultSelectedKeys={['1']} mode="inline" style={{ backgroundColor: 'transparent' }}>
                         <Menu.Item key='1'>
-                            <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to={`${_home}`} ><AiOutlineHome className='mr-2' /> Trang chủ</NavLink>
+                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_home}`} ><AiOutlineHome className='mr-2' /> Trang chủ</NavLink>
                         </Menu.Item>
                         <Menu.Item key='2' >
-                            <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to={`${_schedule}`} ><AiOutlineSchedule className='mr-2' />Lịch cơ quan</NavLink>
+                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_schedule}`} ><AiOutlineSchedule className='mr-2' />Lịch cơ quan</NavLink>
                         </Menu.Item>
                         <Menu.Item key='3' >
-                            <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to={`${_new}`}><AiOutlineFileText className='mr-2' />Thông báo chung</NavLink>
+                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_new}`}><AiOutlineFileText className='mr-2' />Thông báo chung</NavLink>
                         </Menu.Item>
                         <Menu.Item key='4'  >
-                            <NavLink className='flex items-center text-base text-black nav-link focus:font-bold' to='/home'><AiFillSchedule className='mr-2' />Nhiệm vụ</NavLink>
+                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to='/home'><AiFillSchedule className='mr-2' />Nhiệm vụ</NavLink>
                         </Menu.Item>
                     </Menu>
                 </Sider>

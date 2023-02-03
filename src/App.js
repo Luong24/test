@@ -10,6 +10,8 @@ import { _create, _home, _login, _new, _schedule, _update, _view } from './utils
 import UpdateSchedule from './pages/Schedule/UpdateSchedule';
 import DetailSchedule from './pages/Schedule/DetailSchedule';
 import ManageNew from './pages/News/ManageNew';
+import DetailNew from './pages/News/DetailNew';
+import CreateNew from './pages/News/CreateNew';
 
 
 
@@ -29,6 +31,10 @@ export default function App() {
 
 
         <HomeTemplate path={`${_new}`} exact Component={ManageNew} />
+        <HomeTemplate path={`${_new}${_view}/:code`} exact Component={DetailNew} />
+        <HomeTemplate path={`${_new}${_create}`} exact Component={CreateNew} />
+
+
 
 
       </Switch>
