@@ -51,12 +51,6 @@ export default function Schedule() {
     };
 
 
-    const stringToHTML = (str) => {
-        var dom = document.createElement("div");
-        dom.innerHTML = str;
-        return dom;
-    };
-
     const names = new Set();
     const columns = [
         {
@@ -100,10 +94,8 @@ export default function Schedule() {
                             {moment(item.end_at).format('h:mm a')}
                         </div>
                     </div>
-                    <div dangerouslySetInnerHTML={{ __html: item.event_notice }}>
+                    <div dangerouslySetInnerHTML={{ __html: item.event_notice }} />
 
-                    </div>
-                    {/* {stringToHTML(item.event_notice).textContent} */}
                 </Fragment>
             },
 

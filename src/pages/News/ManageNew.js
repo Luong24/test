@@ -3,7 +3,7 @@ import { NewStore } from '../../mobxStore/NewStore';
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineFile, AiOutlineMore } from 'react-icons/ai';
 import { Dropdown, Menu, Modal, Popconfirm, Space, message } from 'antd';
 import { NavLink } from 'react-router-dom';
-import { _create, _new, _view } from '../../utils/config/configPath';
+import { _create, _new, _update, _view } from '../../utils/config/configPath';
 import { history } from '../../App';
 import { TOKEN } from '../../utils/settings/config';
 
@@ -46,7 +46,7 @@ export default function ManageNew() {
                 </NavLink>
             </Menu.Item>
             <Menu.Item key="1">
-                <NavLink to=''>
+                <NavLink to={`${_new}${_update}/${code}`}>
                     <div className='flex items-center'>
                         <AiOutlineEdit className='text-blue-500 mr-2' />
                         <span className='text-blue-500'>Sửa thông tin</span>

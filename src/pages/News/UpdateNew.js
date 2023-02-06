@@ -1,86 +1,20 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import React, { Fragment, useState } from 'react'
 import { history } from '../../App'
 import { _new } from '../../utils/config/configPath'
 import { AiOutlineArrowLeft, AiOutlineUpload } from 'react-icons/ai'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Button, Upload, message } from 'antd'
+import { Upload, message } from 'antd'
 import { DOMAIN, TOKEN } from '../../utils/settings/config'
-import { useFormik } from 'formik';
-import { CreateAccountStore } from '../../mobxStore/AccountStore'
-import { NewStore } from '../../mobxStore/NewStore'
 
 
-export default function CreateNew() {
-    const user = CreateAccountStore();
-    const news = NewStore();
-
-    useEffect(() => {
-        user.getAccountAction()
-    }, [])
-
-    // const [fileList, setFileList] = useState([]);
-    // // console.log('fileList', fileList)
-    // const [uploading, setUploading] = useState(false);
-    // const handleUpload = () => {
-    //     console.log('fileList', fileList)
-
-    //     // const formData = new FormData();
-    //     let listFile = []
-    //     fileList.forEach((file) => {
-    //         // formData.append('files[]', file);
-    //         console.log('file', file)
-    //         listFile.append()
-
-    //     });
-    //     setUploading(true);
-    //     // You can use any AJAX library you like
-    //     // fetch(`${DOMAIN}/api/v1/upload`, {
-    //     //     method: 'POST',
-    //     //     // body: formData,
-    //     //     headers: {
-    //     //         'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}`
-    //     //     },
-    //     // })
-    //     //     .then((res) => res.json())
-    //     //     .then(() => {
-    //     //         setFileList([]);
-    //     //         message.success('upload successfully.');
-    //     //     })
-    //     //     .catch(() => {
-    //     //         message.error('upload failed.');
-    //     //     })
-    //     //     .finally(() => {
-    //     //         setUploading(false);
-    //     //     });
-    // };
-    // const props = {
-    //     onRemove: (file) => {
-    //         console.log('file', file)
-    //         const index = fileList.indexOf(file);
-    //         const newFileList = fileList.slice();
-    //         newFileList.splice(index, 1);
-    //         setFileList(newFileList);
-    //     },
-    //     beforeUpload: (file) => {
-    //         setFileList([...fileList, file]);
-    //         return false;
-    //     },
-    //     fileList,
-    // };
-
+export default function UpdateNew() {
     const [file, setFile] = useState();
 
-
     const handleFile = (info) => {
-        // fetch(`${DOMAIN}/api/v1/upload`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}`
-        //     },
-        //     body: file
-        // })
-        //     .then(res => console.log('first', res))
+
+
         if (info.file.status === 'done') {
 
             info.fileList?.map(item => setFile(item.response.file_id))
@@ -114,36 +48,32 @@ export default function CreateNew() {
         //     }
         // },
     };
-
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
             attachments_request: {
-                new_items: [file]
+                new_items: ''
             },
             content: '',
             author: {
-                name_lowercase: user.lstAccount[0]?.name_lowercase,
-                user_name: user.lstAccount[0]?.username
+                name_lowercase: '',
+                user_name: ''
             },
             id: '',
             subject: '',
         },
         onSubmit: values => {
 
-            // news.createNew(values)
-            console.log('values', values)
 
         }
     })
-
     return (
         <Fragment>
             <div className='-mt-10 flex items-center text-lg'>
                 <button className='rounded-full p-2 mr-2 hover:bg-white hover:text-blue-500' onClick={() => {
                     history.push(`${_new}`)
                 }}><AiOutlineArrowLeft /></button>
-                <div className='font-medium'>Đăng thông báo</div>
+                <div className='font-medium'>Sửa thông tin</div>
             </div>
             <form onSubmit={formik.handleSubmit}>
                 <div className='bg-white rounded-md grid grid-cols-7'>
@@ -186,7 +116,8 @@ export default function CreateNew() {
                             </div>
                         </div>
                         <div className='text-end'>
-                            <button type='submit' className='border px-4 py-2 rounded text-white bg-blue-800 opacity-80 hover:opacity-50'>
+                            <button type='submit' className='border px-4 py-2 rounded text-white bg-blue-800 opacity-80 hover:opacity-50' onClick={() => {
+                            }}>
                                 Đăng thông báo
                             </button>
                         </div>

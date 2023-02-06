@@ -4,7 +4,7 @@ import { Dropdown, Menu, Popconfirm, Space, Upload, message } from 'antd';
 import { NavLink } from 'react-router-dom';
 import { AiOutlineArrowLeft, AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineFile, AiOutlineMore, AiOutlineUpload } from 'react-icons/ai';
 import { history } from '../../App';
-import { _new } from '../../utils/config/configPath';
+import { _new, _update } from '../../utils/config/configPath';
 import { TOKEN } from '../../utils/settings/config';
 
 export default function DetailNew(props) {
@@ -14,11 +14,6 @@ export default function DetailNew(props) {
         news.getDetailNew(code)
     }, [])
 
-    const stringToHTML = (str) => {
-        var dom = document.createElement("div");
-        dom.innerHTML = str;
-        return dom;
-    };
     const confirm = (e) => {
         // console.log(e);
         news.deleteNew(code)
@@ -33,7 +28,7 @@ export default function DetailNew(props) {
         <Menu>
 
             <Menu.Item key="0">
-                <NavLink to=''>
+                <NavLink to={`${_new}${_update}/${code}`}>
                     <div className='flex items-center'>
                         <AiOutlineEdit className='text-blue-500 mr-2' />
                         <span className='text-blue-500'>Sửa thông tin</span>
@@ -110,9 +105,8 @@ export default function DetailNew(props) {
                         {news.lstDetail?.subject}
                     </h1>
                 </div>
-                <div>
-                    <p>{stringToHTML(news.lstDetail?.content).textContent}</p>
-                </div>
+                <div dangerouslySetInnerHTML={{ __html: news.lstDetail?.content }} />
+
                 <div className='flex'>
                     <h1>Tài liệu đính kèm:</h1>
                     <div>{news.lstDetail?.attachments ? <Fragment>

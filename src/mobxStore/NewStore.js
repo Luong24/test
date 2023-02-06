@@ -2,6 +2,8 @@
 import { manageNewService } from './../services/ManageNewService';
 import { useState } from 'react';
 import { message } from 'antd';
+import { history } from '../App';
+import { _new } from '../utils/config/configPath';
 
 
 
@@ -23,10 +25,18 @@ export function NewStore() {
                 setDetail(result.data)
             }
         },
+        async createNew(data) {
+            const result = await manageNewService.createNew(data);
+            if (result.status === 200) {
+                message.success('Thêm mới thành công!')
+                history.push(`${_new}`)
+            }
+        },
         async deleteNew(code) {
             const result = await manageNewService.deleteNew(code);
             if (result.status === 200) {
                 message.success('Xóa thành công!')
+                history.push(`${_new}`)
                 this.getNew()
             }
         },

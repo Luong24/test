@@ -34,7 +34,7 @@ export default function DetailSchedule(props) {
                 }}><AiOutlineArrowLeft /></button>
                 <div className='font-medium'>Chi tiết sự kiện</div>
             </div>
-            <div className='bg-white rounded-md mt-4 py-8'>
+            <div className='bg-white rounded-md mt-4 py-8 '>
                 <div className='grid grid-cols-5'>
                     <div className='col-start-2 col-span-3'>
                         <dl>
@@ -72,8 +72,8 @@ export default function DetailSchedule(props) {
                             </div>
                             <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                                 <dd className='w-1/5'>Nội dung sự kiện</dd>
-                                <dd className='w-4/5'>{detail.detailSchedule[0]?.event_notice ? <div dangerouslySetInnerHTML={{ __html: detail.detailSchedule[0]?.event_notice }}>
-                                </div> : <i>Không có nội dung sự kiện</i>}</dd>
+                                <dd className='w-4/5'>{detail.detailSchedule[0]?.event_notice ? <div dangerouslySetInnerHTML={{ __html: detail.detailSchedule[0]?.event_notice }} />
+                                    : <i>Không có nội dung sự kiện</i>}</dd>
                             </div>
                             <div className='flex px-4 pt-3 pb-1 border-b bg-gray-50'>
                                 <dd className='w-1/5'>Tài liệu đính kèm</dd>
