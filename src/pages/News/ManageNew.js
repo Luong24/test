@@ -1,29 +1,23 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { NewStore } from '../../mobxStore/NewStore';
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineFile, AiOutlineMore } from 'react-icons/ai';
-import { Dropdown, Menu, Modal, Popconfirm, Space, message } from 'antd';
+import { Dropdown, Menu, Popconfirm, Space, message } from 'antd';
 import { NavLink } from 'react-router-dom';
 import { _create, _new, _update, _view } from '../../utils/config/configPath';
 import { history } from '../../App';
-import { TOKEN } from '../../utils/settings/config';
+import { DOMAIN, TOKEN } from '../../utils/settings/config';
 
 export default function ManageNew() {
     const news = NewStore();
-
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
+    const [dis, setDis] = useState(false);
     useEffect(() => {
-        news.getNew()
+        news.getNew(page, size)
     }, [])
+    console.log('first', news.lstNew?.length)
 
-    // console.log('first', news.lstNew)
     const [code, setCode] = useState();
-    // console.log('code', code)
-
-
-    const stringToHTML = (str) => {
-        var dom = document.createElement("div");
-        dom.innerHTML = str;
-        return dom;
-    };
 
     const confirm = (e) => {
         // console.log(e);
@@ -81,7 +75,7 @@ export default function ManageNew() {
                 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}`
             },
         };
-        fetch(`https://stg.vimc.fafu.com.vn/api/v1/upload/attachments/${fileId}`, options)
+        fetch(`${DOMAIN}api/v1/upload/attachments/${fileId}`, options)
             .then(res => {
                 res.blob().then(blob => {
                     console.log('first', blob)
@@ -156,6 +150,21 @@ export default function ManageNew() {
             </div>
             <div className='flex flex-wrap'>
                 {renderNew()}
+            </div>
+            <div className='text-center mr-8'>
+                <button className='border py-2 px-4 bg-white rounded-full' disabled={dis} onClick={
+                    () => {
+                        // setPage(page + 1)
+                        setSize(size + 10)
+                        if (news.lstNew?.length >= size) {
+                            // setDis(false)
+                            news.getNew(page, size + 10)
+                        } else {
+                            alert('Hết rồi!')
+                            setDis(true)
+                        }
+                    }
+                }>Load More</button>
             </div>
         </Fragment>
     )

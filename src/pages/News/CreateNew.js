@@ -72,18 +72,12 @@ export default function CreateNew() {
     const [file, setFile] = useState();
 
 
-    const handleFile = (info) => {
-        // fetch(`${DOMAIN}/api/v1/upload`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}`
-        //     },
-        //     body: file
-        // })
-        //     .then(res => console.log('first', res))
-        if (info.file.status === 'done') {
 
-            info.fileList?.map(item => setFile(item.response.file_id))
+
+    const handleFile = (info) => {
+        if (info.file.status === 'done') {
+            let listFile = info.fileList?.map(item => item.response.file_id)
+            setFile(listFile)
         } else if (info.file.status === 'error') {
             message.error(`${info.file.name} tải lên thất bại!`);
         }
@@ -95,31 +89,15 @@ export default function CreateNew() {
         headers: {
             'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}`
         },
-        onChange: handleFile
-        // onChange(info) {
-        //     // console.log('first', info)
-        //     // if (info.file.status !== 'uploading') {
-        //     //     let reader = new FileReader();
-        //     //     reader.onload = (e) => {
-        //     //         // console.log('firt', e.target.result);
-        //     //     }
-        //     //     reader.readAsText(info.file.originFileObj);
-        //     // }
-        //     if (info.file.status === 'done') {
-        //         // formik.setFieldValue('file_id', info.file.response.file_id)
-        //         setFile(info.file.response.file_id)
-        //         // message.success(`${info.file.name} tải lên thành công!`);
-        //     } else if (info.file.status === 'error') {
-        //         message.error(`${info.file.name} tải lên thất bại!`);
-        //     }
-        // },
+        onChange: handleFile,
+
     };
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
             attachments_request: {
-                new_items: [file]
+                new_items: file ? file : []
             },
             content: '',
             author: {
@@ -131,8 +109,8 @@ export default function CreateNew() {
         },
         onSubmit: values => {
 
-            // news.createNew(values)
-            console.log('values', values)
+            news.createNew(values)
+            // console.log('values', values)
 
         }
     })
@@ -186,7 +164,7 @@ export default function CreateNew() {
                             </div>
                         </div>
                         <div className='text-end'>
-                            <button type='submit' className='border px-4 py-2 rounded text-white bg-blue-800 opacity-80 hover:opacity-50'>
+                            <button type='submit' className='border px-4 py-2 rounded text-white bg-blue-800 opacity-80 hover:opacity-50' >
                                 Đăng thông báo
                             </button>
                         </div>

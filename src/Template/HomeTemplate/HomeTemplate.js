@@ -46,27 +46,31 @@ export default function HomeTemplate(props) {
     return <Route {...restRoute} render={(propsRoute) => {
         return <Fragment>
             <Layout style={{ minHeight: '100vh' }} >
-                <Sider className='border-r' style={{ backgroundColor: '#e4eaf2' }} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                    <div className="w-full flex items-center justify-center my-4 cursor-pointer uppercase text-3xl font-bold" title='Trang chủ'>
-                        <img className='h-14 mr-2' src='https://vimclogistics.com.vn/Data/images/logo/favicon.png' alt='' /> vimc
+                <Sider className='border-r z-50' style={{ backgroundColor: '#e4eaf2' }} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+                    <div className='fixed top-0'>
+                        <div className="w-full flex items-center justify-center my-4 cursor-pointer uppercase text-3xl font-bold" title='Trang chủ'>
+                            <img className='h-14 mr-2' src='https://vimclogistics.com.vn/Data/images/logo/favicon.png' alt='' /> vimc
+                        </div>
+                        <div className='w-full'>
+                            <Menu defaultSelectedKeys={['1']} mode="inline" style={{ backgroundColor: 'transparent' }}>
+                                <Menu.Item key='1'>
+                                    <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_home}`} ><AiOutlineHome className='mr-2' /> Trang chủ</NavLink>
+                                </Menu.Item>
+                                <Menu.Item key='2' >
+                                    <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_schedule}`} ><AiOutlineSchedule className='mr-2' />Lịch cơ quan</NavLink>
+                                </Menu.Item>
+                                <Menu.Item key='3' >
+                                    <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_new}`}><AiOutlineFileText className='mr-2' />Thông báo chung</NavLink>
+                                </Menu.Item>
+                                <Menu.Item key='4'  >
+                                    <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to='/home'><AiFillSchedule className='mr-2' />Danh bạ</NavLink>
+                                </Menu.Item>
+                            </Menu>
+                        </div>
                     </div>
-                    <Menu defaultSelectedKeys={['1']} mode="inline" style={{ backgroundColor: 'transparent' }}>
-                        <Menu.Item key='1'>
-                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_home}`} ><AiOutlineHome className='mr-2' /> Trang chủ</NavLink>
-                        </Menu.Item>
-                        <Menu.Item key='2' >
-                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_schedule}`} ><AiOutlineSchedule className='mr-2' />Lịch cơ quan</NavLink>
-                        </Menu.Item>
-                        <Menu.Item key='3' >
-                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_new}`}><AiOutlineFileText className='mr-2' />Thông báo chung</NavLink>
-                        </Menu.Item>
-                        <Menu.Item key='4'  >
-                            <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to='/home'><AiFillSchedule className='mr-2' />Nhiệm vụ</NavLink>
-                        </Menu.Item>
-                    </Menu>
                 </Sider>
                 <Layout className="site-layout" style={{ backgroundColor: '#c0d5ef' }}>
-                    <div className='border-b shadow-lg' style={{ backgroundColor: '#2c65ac' }}>
+                    <div className='border-b z-40 shadow-lg fixed top-0 left-0 right-0' style={{ backgroundColor: '#2c65ac' }}>
                         <div className='flex justify-end mt-1'>{operations}</div>
                     </div>
 
@@ -81,7 +85,7 @@ export default function HomeTemplate(props) {
                         </Breadcrumb>
                     </div>
                     <Content style={{ margin: '0 16px', }}>
-                        <div style={{ padding: 24, minHeight: 360, }}>
+                        <div className='mt-16' style={{ padding: 24, minHeight: 360, }}>
 
                             <Component {...propsRoute} />
 

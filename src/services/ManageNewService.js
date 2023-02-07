@@ -9,8 +9,8 @@ class ManageNewService extends baseServices {
         super();
     }
 
-    getAllNew = () => {
-        return this.get(`api/v1/news?page=0&size=10`)
+    getAllNew = (page, size) => {
+        return this.get(`api/v1/news?page=${page}&size=${size}`)
     }
     getDetail = (code) => {
         return this.get(`api/v1/news/${code}`)
@@ -18,6 +18,10 @@ class ManageNewService extends baseServices {
 
     createNew = (data) => {
         return this.post(`api/v1/news`, data)
+    }
+
+    updateNew = (data) => {
+        return this.patch(`api/v1/news`, data)
     }
 
     deleteNew = (code) => {

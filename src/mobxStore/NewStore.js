@@ -13,8 +13,8 @@ export function NewStore() {
     return {
         lstNew: news,
         lstDetail: detail,
-        async getNew() {
-            const result = await manageNewService.getAllNew();
+        async getNew(page, size) {
+            const result = await manageNewService.getAllNew(page, size);
             if (result.status === 200) {
                 setNews(result.data.data)
             }
@@ -29,6 +29,13 @@ export function NewStore() {
             const result = await manageNewService.createNew(data);
             if (result.status === 200) {
                 message.success('Thêm mới thành công!')
+                history.push(`${_new}`)
+            }
+        },
+        async updateNew(data) {
+            const result = await manageNewService.updateNew(data);
+            if (result.status === 200) {
+                message.success('Cập nhật thành công!')
                 history.push(`${_new}`)
             }
         },
