@@ -6,13 +6,14 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Schedule from './pages/Schedule/Schedule';
 import CreateSchedule from './pages/Schedule/CreateSchedule';
-import { _create, _home, _login, _new, _schedule, _update, _view } from './utils/config/configPath';
+import { _contact, _create, _home, _login, _new, _schedule, _update, _view } from './utils/config/configPath';
 import UpdateSchedule from './pages/Schedule/UpdateSchedule';
 import DetailSchedule from './pages/Schedule/DetailSchedule';
 import ManageNew from './pages/News/ManageNew';
 import DetailNew from './pages/News/DetailNew';
 import CreateNew from './pages/News/CreateNew';
 import UpdateNew from './pages/News/UpdateNew';
+import ManageContact from './pages/Contact/ManageContact';
 
 
 
@@ -35,6 +36,11 @@ export default function App() {
         <HomeTemplate path={`${_new}${_view}/:code`} exact Component={DetailNew} />
         <HomeTemplate path={`${_new}${_create}`} exact Component={CreateNew} />
         <HomeTemplate path={`${_new}${_update}/:code`} exact Component={UpdateNew} />
+
+        <HomeTemplate path={`${_contact}`} exact Component={ManageContact} />
+
+
+
 
 
 

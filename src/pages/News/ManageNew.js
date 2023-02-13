@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom';
 import { _create, _new, _update, _view } from '../../utils/config/configPath';
 import { history } from '../../App';
 import { DOMAIN, TOKEN } from '../../utils/settings/config';
+import InfiniteScroll from 'react-infinite-scroll-component'
+
 
 export default function ManageNew() {
     const news = NewStore();
@@ -15,7 +17,6 @@ export default function ManageNew() {
     useEffect(() => {
         news.getNew(page, size)
     }, [])
-    console.log('first', news.lstNew?.length)
 
     const [code, setCode] = useState();
 
@@ -137,7 +138,15 @@ export default function ManageNew() {
 
         })
     }
+    const [hasMore, setHasMore] = useState(true)
+    console.log('size', news.lstNew?.length)
 
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setSize(size + 10)
+    //     }, 500)
+    //     // news.getNew(page, size + 10)
+    // }, [])
 
     return (
         <Fragment>
@@ -148,9 +157,22 @@ export default function ManageNew() {
                     Đăng thông báo
                 </button>
             </div>
-            <div className='flex flex-wrap'>
-                {renderNew()}
-            </div>
+            <InfiniteScroll
+                dataLength={10}
+                next={() => news.getNew(page, size)}
+                hasMore={hasMore}
+            // loader={<h4>Loading...</h4>}
+            // endMessage={
+            //     <p style={{ textAlign: 'center' }}>
+            //         <b>Yay! You have seen it all</b>
+            //     </p>
+            // }
+            >
+                <div className='flex flex-wrap'>
+                    {renderNew()}
+                </div>
+            </InfiniteScroll>
+
             <div className='text-center mr-8'>
                 <button className='border py-2 px-4 bg-white rounded-full' disabled={dis} onClick={
                     () => {

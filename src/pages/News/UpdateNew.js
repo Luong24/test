@@ -9,7 +9,6 @@ import { Upload, message } from 'antd'
 import { DOMAIN, TOKEN } from '../../utils/settings/config'
 import { NewStore } from '../../mobxStore/NewStore'
 
-
 export default function UpdateNew(props) {
     let { code } = props.match.params;
     const detail = NewStore();
@@ -17,11 +16,13 @@ export default function UpdateNew(props) {
         detail.getDetailNew(code)
     }, [])
     let detailNew = detail.lstDetail;
-    let lstFile = detailNew?.attachments?.map((item) => item.file_name);
+    let lstFile = detailNew?.attachments?.map((item) => item.file_id);
     console.log('lstFile', lstFile)
 
     // console.log('detail', detailNew)
     const [file, setFile] = useState();
+    console.log('lstFile', file)
+
     // const [upload, setUpload] = useState(false);
     // console.log('upload', upload)
     const handleFile = (info) => {
@@ -47,7 +48,12 @@ export default function UpdateNew(props) {
                 message.error(`${info.file.name} tải lên thất bại!`);
             }
         },
-        // defaultFileList: [lstFile?.map(item => ({ uid: '', name: item }))]
+        defaultFileList: [
+            // {
+            //     uid: '',
+            //     name: lstFile
+            // }
+        ]
     };
     const formik = useFormik({
         enableReinitialize: true,
