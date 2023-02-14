@@ -130,7 +130,7 @@ export default function ManageStaff(props) {
                             setPage(page - 1)
                         }
                     }}
-                />;
+                />
             </div>
         </Fragment>
     )

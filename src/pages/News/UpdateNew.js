@@ -16,12 +16,12 @@ export default function UpdateNew(props) {
         detail.getDetailNew(code)
     }, [])
     let detailNew = detail.lstDetail;
-    let lstFile = detailNew?.attachments?.map((item) => item.file_id);
-    console.log('lstFile', lstFile)
+    let lstFile = detailNew?.attachments?.map((item) => item.file_name);
+    // console.log('lstFile', lstFile)
 
     // console.log('detail', detailNew)
     const [file, setFile] = useState();
-    console.log('lstFile', file)
+    // console.log('lstFile', file)
 
     // const [upload, setUpload] = useState(false);
     // console.log('upload', upload)
@@ -34,6 +34,16 @@ export default function UpdateNew(props) {
             message.error(`${info.file.name} tải lên thất bại!`);
         }
     }
+    let a = []
+    lstFile?.map((item, index) => {
+        return a.push({
+            uid: index,
+            name: item
+        });
+    })
+
+
+    // console.log('a', a)
 
     const propss = {
         name: 'file',
@@ -48,12 +58,8 @@ export default function UpdateNew(props) {
                 message.error(`${info.file.name} tải lên thất bại!`);
             }
         },
-        defaultFileList: [
-            // {
-            //     uid: '',
-            //     name: lstFile
-            // }
-        ]
+        // fileList: a
+
     };
     const formik = useFormik({
         enableReinitialize: true,
@@ -118,26 +124,16 @@ export default function UpdateNew(props) {
                                 Tài liệu đính kèm:
                             </div>
                             <div className='w-3/4'>
-                                <Upload {...propss}>
+                                <Upload {...propss}
+                                    fileList={a}
+
+                                >
                                     <div type='text' className='border rounded-md flex items-center px-2 py-1 hover:border-blue-300 '>
                                         <AiOutlineUpload className='mx-2' />Chọn tài liệu đính kèm
                                     </div>
                                 </Upload>
                             </div>
                         </div>
-                        {/* <p>{detailNew.attachments ? <Fragment>
-                            {detailNew?.attachments?.map(file => {
-                                return <div className='mx-2 flex detailNews-center text-blue-600'>
-                                    <AiOutlineFile />
-                                    <button className='ml-1 mr-3 hover:underline' title='Tải xuống' onClick={() => {
-
-                                    }}>{file.file_name}</button>
-                                    <button className='px-1 rounded text-green-600 hover:bg-slate-100' title='Xem tài liệu' >
-                                        <AiOutlineEye />
-                                    </button>
-                                </div>
-                            })}
-                        </Fragment> : <i className='mx-2'>Không có tài liệu đính kèm</i>}</p> */}
                         <div className='text-end'>
                             <button type='submit' className='border px-4 py-2 rounded text-white bg-blue-800 opacity-80 hover:opacity-50'
                             // onClick={() => setUpload(true)}

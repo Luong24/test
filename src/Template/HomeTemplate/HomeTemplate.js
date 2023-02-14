@@ -3,9 +3,9 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Route } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { history } from '../../App';
-import { AiFillSchedule, AiOutlineFileText, AiOutlineHome, AiOutlineSchedule, } from "react-icons/ai";
+import { AiFillSchedule, AiOutlineFileText, AiOutlineHome, AiOutlineSchedule, AiOutlineUser, } from "react-icons/ai";
 import { CreateAccountStore } from '../../mobxStore/AccountStore';
-import { _contact, _home, _login, _new, _schedule } from '../../utils/config/configPath';
+import { _account, _contact, _home, _login, _new, _schedule } from '../../utils/config/configPath';
 import { BsPersonCircle } from 'react-icons/bs';
 
 
@@ -64,6 +64,9 @@ export default function HomeTemplate(props) {
                                 </Menu.Item>
                                 <Menu.Item key='4'  >
                                     <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_contact}`}><AiFillSchedule className='mr-2' />Danh bạ</NavLink>
+                                </Menu.Item>
+                                <Menu.Item key='5'  >
+                                    <NavLink className='flex items-center mt-2 text-base text-black nav-link focus:font-bold' to={`${_account}`}><AiOutlineUser className='mr-2' />Tài khoản</NavLink>
                                 </Menu.Item>
                             </Menu>
                         </div>

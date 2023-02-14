@@ -10,3 +10,5 @@ export const _view = '/view'
 export const _update = '/update'
 export const _new = '/general-notifications'
 export const _contact = '/contacts'
+export const _account = '/user-account-management'
+

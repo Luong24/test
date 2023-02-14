@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { AiOutlineArrowLeft, AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineFile, AiOutlineMore, AiOutlineUpload } from 'react-icons/ai';
 import { history } from '../../App';
 import { _new, _update } from '../../utils/config/configPath';
-import { TOKEN } from '../../utils/settings/config';
+import { DOMAIN, TOKEN } from '../../utils/settings/config';
 
 export default function DetailNew(props) {
     let { code } = props.match.params;
@@ -62,7 +62,7 @@ export default function DetailNew(props) {
                 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem(TOKEN))}`
             },
         };
-        fetch(`https://stg.vimc.fafu.com.vn/api/v1/upload/attachments/${fileId}`, options)
+        fetch(`${DOMAIN}api/v1/upload/attachments/${fileId}`, options)
             .then(res => {
                 res.blob().then(blob => {
                     console.log('first', blob)

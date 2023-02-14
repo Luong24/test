@@ -138,7 +138,7 @@ export default function ManageDepartment(props) {
                                         setPage(page - 1)
                                     }
                                 }}
-                            />;
+                            />
                         </div>
                     </Content>
                 </Layout>
